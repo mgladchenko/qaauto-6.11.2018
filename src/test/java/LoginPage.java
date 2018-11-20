@@ -4,18 +4,18 @@ import org.openqa.selenium.WebElement;
 
 public class LoginPage {
 
-    WebDriver webDriver;
+    private WebDriver webDriver;
 
-    WebElement emailField;
-    WebElement passwordField;
-    WebElement signInButton;
+    private WebElement emailField;
+    private WebElement passwordField;
+    private WebElement signInButton;
 
     public LoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         initElements();
     }
 
-    public void initElements() {
+    private void initElements() {
         emailField = webDriver.findElement(By.xpath("//*[@id='login-email']"));
         passwordField = webDriver.findElement(By.xpath("//*[@id='login-password']"));
         signInButton = webDriver.findElement(By.xpath("//*[@id='login-submit']"));
@@ -25,6 +25,12 @@ public class LoginPage {
         emailField.sendKeys(userEmail);
         passwordField.sendKeys(userPass);
         signInButton.click();
+    }
+
+    public boolean isPageLoaded() {
+       return signInButton.isDisplayed()
+               && webDriver.getTitle().equals("LinkedIn: Log In or Sign Up")
+               && webDriver.getCurrentUrl().equals("https://www.linkedin.com/");
     }
 
 }
