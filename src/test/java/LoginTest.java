@@ -1,6 +1,4 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -33,37 +31,27 @@ public class LoginTest {
     @Test
     public void successfulLoginTest() {
         LoginPage loginPage = new LoginPage(webDriver);
-        loginPage.login("linkedin.tst.yanina@gmail.com", "Test123!");
+        HomePage homePage = loginPage.loginToHome("linkedin.tst.yanina@gmail.com", "Test123!");
 
-        HomePage homePage = new HomePage(webDriver);
-
-        //Verify that page title is "LinkedIn: Log In or Sign Up"
-
-        Assert.assertTrue(webDriver.getTitle().contains("LinkedIn"),
-                "Home page title is wrong.");
-        Assert.assertTrue(homePage.welcomeMessage.isDisplayed(),
-                "Welcome message is not displayed is not displayed.");
+        Assert.assertTrue(homePage.isPageLoaded(),
+                "Home page is not loaded.");
     }
 
     @Test
     public void negativeLeadsToLoginSubmitPage() {
         LoginPage loginPage = new LoginPage(webDriver);
-        loginPage.login("linkedin.tst.yanina@@gmail.com", "wrong");
 
-        WebElement loginForm = webDriver.findElement(By.xpath("//form[@class='login__form']"));
-        Assert.assertTrue(loginForm.isDisplayed(), "Login Submit page is not loaded.");
+        LoginSubmitPage loginSubmitPage = loginPage.loginToLoginSubmit(
+                "linkedin.tst.yanina@@gmail.com", "wrong");
 
-        WebElement userEmailError = webDriver.findElement(By.xpath("//div[@id='error-for-username']"));
-        Assert.assertEquals(userEmailError.getText(), "Hmm, we don't recognize that email. Please try again.",
+        Assert.assertTrue(loginSubmitPage.isPageLoaded(),
+                "Login Submit page is not loaded.");
+
+        Assert.assertEquals(loginSubmitPage.getUserEmailError(),
+                "Hmm, we don't recognize that email. Please try again.",
                 "userEmail Validation message is wrong.");
 
-        WebElement userPassError = webDriver.findElement(By.xpath("//div[@id='error-for-password']"));
-        Assert.assertEquals(userPassError.getText(), "",
+        Assert.assertEquals(loginSubmitPage.getUserPassError(), "",
                 "userPass Validation message is wrong.");
-
-
-
-
-
     }
 }
