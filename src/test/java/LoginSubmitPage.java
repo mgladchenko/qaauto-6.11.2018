@@ -2,8 +2,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class LoginSubmitPage {
-    private WebDriver webDriver;
+public class LoginSubmitPage extends BasePage {
 
     private WebElement loginForm;
     private WebElement userEmailError;

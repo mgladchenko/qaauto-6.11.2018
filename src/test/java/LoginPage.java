@@ -3,9 +3,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class LoginPage {
+import static java.lang.Thread.sleep;
 
-    private WebDriver webDriver;
+public class LoginPage extends BasePage {
 
     @FindBy(xpath = "//*[@id='login-email']")
     private WebElement emailField;
@@ -21,27 +21,25 @@ public class LoginPage {
         PageFactory.initElements(webDriver, this);
     }
 
-    public LoginSubmitPage loginToLoginSubmit(String userEmail, String userPass) {
+    public <T> T login(String userEmail, String userPass) {
         emailField.sendKeys(userEmail);
         passwordField.sendKeys(userPass);
         signInButton.click();
-        return new LoginSubmitPage(webDriver);
+        try {
+            sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (webDriver.getCurrentUrl().contains("/feed")) {
+            return (T) new HomePage(webDriver);
+        }
+        if (webDriver.getCurrentUrl().contains("/login-submit")) {
+            return (T) new LoginSubmitPage(webDriver);
+        }
+        else {
+            return (T) new LoginPage(webDriver);
+        }
     }
-
-    public HomePage loginToHome(String userEmail, String userPass) {
-        emailField.sendKeys(userEmail);
-        passwordField.sendKeys(userPass);
-        signInButton.click();
-        return new HomePage(webDriver);
-    }
-
-    public LoginPage login(String userEmail, String userPass) {
-        emailField.sendKeys(userEmail);
-        passwordField.sendKeys(userPass);
-        signInButton.click();
-        return new LoginPage(webDriver);
-    }
-
 
     public boolean isPageLoaded() {
        return signInButton.isDisplayed()

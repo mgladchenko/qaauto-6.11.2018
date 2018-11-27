@@ -3,6 +3,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class LoginTest {
@@ -28,10 +29,20 @@ public class LoginTest {
                 "LogIn page is not loaded.");
     }
 
-    @Test
-    public void successfulLoginTest() {
+    @DataProvider
+    public Object[][] validDataProvider() {
+        return new Object[][]{
+                { "linkedin.tst.yanina@gmail.com", "Test123!" },
+                { "linkedin.tst.yanina@GMAIL.COM", "Test123!" },
+                { " linkedin.tst.yanina@gmail.com ", "Test123!" },
+        };
+    }
+
+
+    @Test(dataProvider = "validDataProvider")
+    public void successfulLoginTest(String userEmail, String userPass) {
         LoginPage loginPage = new LoginPage(webDriver);
-        HomePage homePage = loginPage.loginToHome("linkedin.tst.yanina@gmail.com", "Test123!");
+        HomePage homePage = loginPage.login(userEmail, userPass);
 
         Assert.assertTrue(homePage.isPageLoaded(),
                 "Home page is not loaded.");
@@ -41,7 +52,7 @@ public class LoginTest {
     public void negativeLeadsToLoginSubmitPage() {
         LoginPage loginPage = new LoginPage(webDriver);
 
-        LoginSubmitPage loginSubmitPage = loginPage.loginToLoginSubmit(
+        LoginSubmitPage loginSubmitPage = loginPage.login(
                 "linkedin.tst.yanina@@gmail.com", "wrong");
 
         Assert.assertTrue(loginSubmitPage.isPageLoaded(),
