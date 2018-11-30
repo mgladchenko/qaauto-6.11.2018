@@ -48,21 +48,34 @@ public class LoginTest {
                 "Home page is not loaded.");
     }
 
-    @Test
-    public void negativeLeadsToLoginSubmitPage() {
+    @DataProvider
+    public Object[][] loginSubmitData() {
+        return new Object[][]{
+                { "linkedin.tst.yanina@@gmail.com", "wrong", "Hmm, we don't recognize that email. Please try again.", "" },
+        };
+    }
+
+    @Test(dataProvider = "loginSubmitData")
+    public void negativeLeadsToLoginSubmitPage(
+            String userEmail,
+            String userPass,
+            String emailValidationMessage,
+            String passValidationMessage
+    )
+    {
         LoginPage loginPage = new LoginPage(webDriver);
 
-        LoginSubmitPage loginSubmitPage = loginPage.login(
-                "linkedin.tst.yanina@@gmail.com", "wrong");
+        LoginSubmitPage loginSubmitPage = loginPage.login(userEmail, userPass);
 
         Assert.assertTrue(loginSubmitPage.isPageLoaded(),
                 "Login Submit page is not loaded.");
 
         Assert.assertEquals(loginSubmitPage.getUserEmailError(),
-                "Hmm, we don't recognize that email. Please try again.",
+                emailValidationMessage,
                 "userEmail Validation message is wrong.");
 
-        Assert.assertEquals(loginSubmitPage.getUserPassError(), "",
+        Assert.assertEquals(loginSubmitPage.getUserPassError(),
+                passValidationMessage,
                 "userPass Validation message is wrong.");
     }
 }
