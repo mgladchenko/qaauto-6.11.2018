@@ -1,28 +1,15 @@
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+package test;
+
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import page.HomePage;
+import page.LoginSubmitPage;
 
-public class LoginTest {
-    WebDriver webDriver;
-
-    @BeforeMethod
-    public void beforeMethod() {
-        webDriver = new ChromeDriver();
-        webDriver.get("https://www.linkedin.com");
-    }
-
-    @AfterMethod
-    public void afterMethod() {
-        webDriver.quit();
-    }
+public class LoginTest extends BaseTest {
 
     @Test
     public void negativeLoginTest() {
-        LoginPage loginPage = new LoginPage(webDriver);
         loginPage.login("a@b.c", "");
 
         Assert.assertTrue(loginPage.isPageLoaded(),
@@ -41,7 +28,6 @@ public class LoginTest {
 
     @Test(dataProvider = "validDataProvider")
     public void successfulLoginTest(String userEmail, String userPass) {
-        LoginPage loginPage = new LoginPage(webDriver);
         HomePage homePage = loginPage.login(userEmail, userPass);
 
         Assert.assertTrue(homePage.isPageLoaded(),
@@ -63,8 +49,6 @@ public class LoginTest {
             String passValidationMessage
     )
     {
-        LoginPage loginPage = new LoginPage(webDriver);
-
         LoginSubmitPage loginSubmitPage = loginPage.login(userEmail, userPass);
 
         Assert.assertTrue(loginSubmitPage.isPageLoaded(),
