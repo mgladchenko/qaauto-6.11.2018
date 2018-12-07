@@ -33,7 +33,8 @@ public class GMailService {
 
 		GMailService gMailService = new GMailService();
 		gMailService.connect();
-		String message = gMailService.waitMessage(messageSubject, messageTo, messageFrom, 60);
+		String message = gMailService.waitMessage(
+				messageSubject, messageTo, messageFrom, 60);
 		System.out.println("Content: " + message);
 	}
 
