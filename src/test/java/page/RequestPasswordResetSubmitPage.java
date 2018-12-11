@@ -1,5 +1,6 @@
 package page;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -31,6 +32,11 @@ public class RequestPasswordResetSubmitPage extends BasePage {
         String message = gMailService.waitMessage(
                 messageSubject, messageTo, messageFrom, 180);
         System.out.println("Content: " + message);
+
+        String resetPasswordLink =
+                StringUtils.substringBetween(message, "href=\"", "\" style=")
+                        .replace("amp;", "");
+        webDriver.get(resetPasswordLink);
 
         return new SetNewPasswordPage(webDriver);
 

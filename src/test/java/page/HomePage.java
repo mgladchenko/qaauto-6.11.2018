@@ -31,11 +31,7 @@ public class HomePage extends BasePage {
     public SearchResultsPage search(String searchTerm) {
         searchField.sendKeys(searchTerm);
         searchField.sendKeys(Keys.RETURN);
-        try {
-            sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         return new SearchResultsPage(webDriver);
     }
 }

@@ -33,6 +33,13 @@ public class LoginPage extends BasePage {
         PageFactory.initElements(webDriver, this);
     }
 
+    /**
+     * Method to log in with specific credentials.
+     * @param userEmail - String with userEmail.
+     * @param userPass - String with userPass.
+     * @param <T> - generic type of returned PageObject.
+     * @return Either HomePage/LoginSubmitPage/LoginPage page object.
+     */
     public <T> T login(String userEmail, String userPass) {
         emailField.sendKeys(userEmail);
         passwordField.sendKeys(userPass);
