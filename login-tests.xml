@@ -1,6 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="Linkedin login tests">
+    <parameter name="browserName" value="Firefox"/>
 
     <test name="Positive">
         <classes>
