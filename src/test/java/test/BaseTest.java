@@ -4,6 +4,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
@@ -24,7 +25,11 @@ public class BaseTest {
         if (browserName.toLowerCase().equals("chrome")) {
             WebDriverManager.chromedriver().setup();
             webDriver = new ChromeDriver();
-        } else {
+        }
+        if (browserName.toLowerCase().equals("ie")) {
+            WebDriverManager.iedriver().setup();
+            webDriver = new InternetExplorerDriver();
+        }else {
             try {
                 throw new Exception("browserName "+browserName+" is not supported.");
             } catch (Exception e) {
